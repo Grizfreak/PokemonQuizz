@@ -7,11 +7,14 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -27,8 +30,10 @@ public class MainActivity extends AppCompatActivity {
     public ImageButton reload;
     public boolean displaycolor;
     public ImageButton display;
+    public PokemonNames actualPokemonName;
     public List<PokemonNames> displayed_names = new ArrayList<>();
     public Button btn, btn2, btn3, btn4;
+    public TextView chrono;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         btn2 = findViewById(R.id.button2);
         btn3 = findViewById(R.id.button3);
         btn4 = findViewById(R.id.button4);
+        chrono = findViewById(R.id.chrono);
         btn.setBackgroundColor(getResources().getColor(R.color.red));
         btn2.setBackgroundColor(getResources().getColor(R.color.blue));
         btn3.setBackgroundColor(getResources().getColor(R.color.yellow));
@@ -61,6 +67,30 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view){ displayColor(); }
         });
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkResult(btn);
+            }
+        });
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkResult(btn2);
+            }
+        });
+        btn3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkResult(btn3);
+            }
+        });
+        btn4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkResult(btn4);
+            }
+        });
     }
 
     private void getPokemonName() {
@@ -74,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
         Log.e("name",resName);
         int num = Integer.parseInt(resName);
         names.add(names_to_get.get(num-1));
+        actualPokemonName = names.get(0);
         rndInt = rand.nextInt(names_to_get.size());
         names.add(names_to_get.remove(rndInt));
         rndInt = rand.nextInt(names_to_get.size());
@@ -136,4 +167,43 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void checkResult(Button btn) {
+        if(actualPokemonName.toString() == btn.getText().toString()){
+            Toast toast = Toast.makeText(this, "cévré", Toast.LENGTH_SHORT);
+            toast.show();
+            displayGoodAnswer();
+        } else {
+            Toast toast = Toast.makeText(this, "céfo", Toast.LENGTH_SHORT);
+            toast.show();
+            displayBadAnswer();
+        }
+    }
+
+    private void displayGoodAnswer() {
+        new CountDownTimer(3000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                chrono.setText("seconds remaining: " + millisUntilFinished / 1000);
+            }
+
+            public void onFinish() {
+                chrono.setText("done!");
+                reload.callOnClick();
+
+            }
+        }.start();
+    }
+    private void displayBadAnswer() {
+        new CountDownTimer(3000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                chrono.setText("seconds remaining: " + millisUntilFinished / 1000);
+            }
+
+            public void onFinish() {
+                chrono.setText("done!");
+                displayColor();
+            }
+        }.start();
+    }
 }
