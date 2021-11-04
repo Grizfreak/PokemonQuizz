@@ -1,4 +1,4 @@
-package com.example.tp_note;
+package com.example.PokemonQuizz;
 
 import org.junit.Test;
 

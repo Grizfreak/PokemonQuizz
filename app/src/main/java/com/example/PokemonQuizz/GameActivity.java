@@ -1,18 +1,19 @@
-package com.example.tp_note;
+package com.example.PokemonQuizz;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,9 +22,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
-public class MainActivity extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity {
 
     public TypedArray imgs_black ;
     public ImageView pokemon;
@@ -34,9 +36,12 @@ public class MainActivity extends AppCompatActivity {
     public List<PokemonNames> displayed_names = new ArrayList<>();
     public Button btn, btn2, btn3, btn4;
     public TextView chrono;
+    public ProgressBar answerBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
+        getSupportActionBar().hide();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         pokemon = findViewById(R.id.pokemonquestion);
@@ -47,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         btn3 = findViewById(R.id.button3);
         btn4 = findViewById(R.id.button4);
         chrono = findViewById(R.id.chrono);
+        answerBar = findViewById(R.id.answerBar);
         btn.setBackgroundColor(getResources().getColor(R.color.red));
         btn2.setBackgroundColor(getResources().getColor(R.color.blue));
         btn3.setBackgroundColor(getResources().getColor(R.color.yellow));
@@ -171,6 +177,7 @@ public class MainActivity extends AppCompatActivity {
         if(actualPokemonName.toString() == btn.getText().toString()){
             Toast toast = Toast.makeText(this, "cévré", Toast.LENGTH_SHORT);
             toast.show();
+
             displayGoodAnswer();
         } else {
             Toast toast = Toast.makeText(this, "céfo", Toast.LENGTH_SHORT);
@@ -180,30 +187,45 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void displayGoodAnswer() {
-        new CountDownTimer(3000, 1000) {
+        chrono.setTextColor(ContextCompat.getColor(this, R.color.green));
+        chrono.setText("Bien joué ! Nos équipes préparent le prochain !");
+        new CountDownTimer(10000, 1) {
 
             public void onTick(long millisUntilFinished) {
-                chrono.setText("seconds remaining: " + millisUntilFinished / 1000);
+                displayProgress(millisUntilFinished);
             }
 
             public void onFinish() {
-                chrono.setText("done!");
+                answerBar.setProgress(100);
                 reload.callOnClick();
-
+                answerBar.setProgress(0);
+                chrono.setText("");
             }
         }.start();
     }
     private void displayBadAnswer() {
-        new CountDownTimer(3000, 1000) {
+        chrono.setTextColor(ContextCompat.getColor(this, R.color.red));
+        chrono.setText("Dommage, ce pokémon était "+actualPokemonName.toString().toUpperCase(Locale.ROOT));
+        new CountDownTimer(10000, 1) {
 
             public void onTick(long millisUntilFinished) {
-                chrono.setText("seconds remaining: " + millisUntilFinished / 1000);
+                displayProgress(millisUntilFinished);
             }
 
             public void onFinish() {
-                chrono.setText("done!");
-                displayColor();
+                answerBar.setProgress(100);
+                reload.callOnClick();
+                //TODO Intent change to scores screen
+                answerBar.setProgress(0);
+                chrono.setText("");
             }
         }.start();
+    }
+
+    private void displayProgress(long millisUntilFinished) {
+        int maxValue=answerBar.getMax();
+        long progress = ((10000-millisUntilFinished) * maxValue) / 10000; // (3000 * answerBar.getProgress())/100 = millisUntilFinished
+        Log.e("test", String.valueOf(progress));
+        answerBar.setProgress((int) progress);
     }
 }
