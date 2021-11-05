@@ -29,7 +29,17 @@ jobs:
 
       - name: Run Unit Tests
         run: ./gradlew test
-
+        
+      - name: Create Temporary Folder for usage
+        run: mkdir build_releases
+        
+      - name: Add test artifacts
+        run: |
+          cd build_releases
+          echo 'alpha'    > alpha.html
+          echo 'bravo'    > bravo.html
+          echo 'charlie'  > charlie.apk
+          cd ..
       - name: Decode Keystore
         id: decode_keystore
         uses: timheuer/base64-to-file@v1
@@ -61,23 +71,12 @@ jobs:
         #     arch: x86
         #     profile: Nexus 6
         #     script: ./gradlew connectedCheck --stacktrace
-
-
-      - name: Create Temporary Folder for usage
-        run: mkdir build_releases
-      - name: Add test artifacts
-        run: |
-          cd build_releases
-          echo 'alpha'    > alpha.html
-          echo 'bravo'    > bravo.html
-          echo 'charlie'  > charlie.html
-          cd ..
     
       - name: Upload APK to folder
         uses: actions/upload-artifact@v2
         with: 
-          name: Latest build
-          path: build_releases
+          name: Release
+          path: build_releases/charlie.apk
       
       - name: Discord notification
         env:
