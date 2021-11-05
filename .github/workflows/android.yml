@@ -30,16 +30,6 @@ jobs:
       - name: Run Unit Tests
         run: ./gradlew test
         
-      - name: Create Temporary Folder for usage
-        run: mkdir build_releases
-        
-      - name: Add test artifacts
-        run: |
-          cd build_releases
-          echo 'alpha'    > alpha.html
-          echo 'bravo'    > bravo.html
-          echo 'charlie'  > charlie.apk
-          cd ..
       - name: Decode Keystore
         id: decode_keystore
         uses: timheuer/base64-to-file@v1
@@ -76,7 +66,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with: 
           name: Release
-          path: build_releases/charlie.apk
+          path: app/build/outputs/debug/PokemonQuizz-*.apk
       
       - name: Discord notification
         env:
