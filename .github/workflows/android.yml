@@ -62,13 +62,23 @@ jobs:
         #     profile: Nexus 6
         #     script: ./gradlew connectedCheck --stacktrace
 
-      - name: Upload APK
-        uses: actions/upload-artifact@v2.2.0
-        with:
-          name: Release Artifact
-          path: app/build/outputs/apk/debug/PokemonQuizz-debug-2021-11-05-11-32-50.apk
-          
 
+      - name: Create Temporary Folder for usage
+        run: mkdir app/build/
+      - name: Add test artifacts
+        run: |
+          cd app/build
+          echo 'alpha'    > alpha.html
+          echo 'bravo'    > bravo.html
+          echo 'charlie'  > charlie.html
+          cd ..
+    
+      - name: Upload APK to folder
+        uses: actions/upload-artifact@v2
+        with: 
+          name: Latest build
+          path: app/build/
+      
       - name: Discord notification
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
