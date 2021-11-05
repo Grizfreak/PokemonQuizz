@@ -64,10 +64,10 @@ jobs:
 
 
       - name: Create Temporary Folder for usage
-        run: mkdir app/build/
+        run: mkdir build_releases
       - name: Add test artifacts
         run: |
-          cd app/build
+          cd build_releases
           echo 'alpha'    > alpha.html
           echo 'bravo'    > bravo.html
           echo 'charlie'  > charlie.html
@@ -77,7 +77,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with: 
           name: Latest build
-          path: app/build/
+          path: build_releases
       
       - name: Discord notification
         env:
@@ -92,4 +92,4 @@ jobs:
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         with:
-          args: app/build/outputs/apk/release/app-monpotager-*.apk
+          args: build_releases/*.apk
