@@ -65,8 +65,8 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v2.2.0
         with:
-          name: Release artifact
-          path: D:\Android\TP_note\app\build\outputs\apk\debug\
+          name: Release Artifact
+          path: app/build/outputs/apk/debug/PokemonQuizz-*.apk
 
       - name: Discord notification
         env:
