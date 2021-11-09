@@ -1,18 +1,27 @@
 package com.example.PokemonQuizz;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.core.widget.TextViewCompat;
 
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +32,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.NoSuchElementException;
 import java.util.Random;
 
 public class GameActivity extends AppCompatActivity {
@@ -126,7 +136,6 @@ public class GameActivity extends AppCompatActivity {
         btn2.setText(names.remove(0).toString());
         btn3.setText(names.remove(0).toString());
         btn4.setText(names.remove(0).toString());
-
     }
 
     public String getResourceNameFromClassByID(Class<?> aClass, int resourceID)
@@ -189,42 +198,48 @@ public class GameActivity extends AppCompatActivity {
     private void displayGoodAnswer() {
         chrono.setTextColor(ContextCompat.getColor(this, R.color.green));
         chrono.setText("Bien joué ! Nos équipes préparent le prochain !");
-        new CountDownTimer(10000, 1) {
+        displayColor();
+        new CountDownTimer(5000, 1) {
 
             public void onTick(long millisUntilFinished) {
                 displayProgress(millisUntilFinished);
             }
 
             public void onFinish() {
+                displayColor();
                 answerBar.setProgress(100);
                 reload.callOnClick();
                 answerBar.setProgress(0);
                 chrono.setText("");
+
             }
         }.start();
     }
     private void displayBadAnswer() {
         chrono.setTextColor(ContextCompat.getColor(this, R.color.red));
         chrono.setText("Dommage, ce pokémon était "+actualPokemonName.toString().toUpperCase(Locale.ROOT));
-        new CountDownTimer(10000, 1) {
+        displayColor();
+        new CountDownTimer(5000, 1) {
 
             public void onTick(long millisUntilFinished) {
                 displayProgress(millisUntilFinished);
             }
 
             public void onFinish() {
+                displayColor();
                 answerBar.setProgress(100);
                 reload.callOnClick();
                 //TODO Intent change to scores screen
                 answerBar.setProgress(0);
                 chrono.setText("");
+
             }
         }.start();
     }
 
     private void displayProgress(long millisUntilFinished) {
         int maxValue=answerBar.getMax();
-        long progress = ((10000-millisUntilFinished) * maxValue) / 10000; // (3000 * answerBar.getProgress())/100 = millisUntilFinished
+        long progress = ((5000-millisUntilFinished) * maxValue) / 5000; // (3000 * answerBar.getProgress())/100 = millisUntilFinished
         Log.e("test", String.valueOf(progress));
         answerBar.setProgress((int) progress);
     }
