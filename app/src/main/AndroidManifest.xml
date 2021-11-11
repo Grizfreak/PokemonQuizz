@@ -11,7 +11,8 @@
         android:theme="@style/Theme.TP_note">
         <activity
             android:name=".MenuActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,13 +22,13 @@
         <activity
             android:name=".GameActivity"
             android:exported="true"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".ScoresActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+
     </application>
 
 </manifest>

@@ -11,7 +11,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/rotom_background2"
+        android:src="@drawable/rotom_background3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -23,7 +23,7 @@
         android:id="@+id/pokemonquestion"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="180dp"
+        android:layout_marginTop="130dp"
         android:adjustViewBounds="true"
         android:scaleType="centerInside"
         app:layout_constraintDimensionRatio="1:1"
@@ -63,6 +63,7 @@
     <TextView
         android:id="@+id/chrono"
         android:layout_width="0dp"
+        android:fontFamily="@font/pokemon_solid"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:maxLines="1"
@@ -98,6 +99,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
+                android:textColor="@color/black"
                 android:maxLines="1"
                 android:text="Button"
                 app:autoSizeTextType="uniform"
@@ -108,6 +110,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
+                android:textColor="@color/black"
                 android:maxLines="1"
                 android:text="Button"
                 app:autoSizeTextType="uniform" />
@@ -124,6 +127,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
+                android:textColor="@color/black"
                 android:maxLines="1"
                 android:text="Button"
                 app:autoSizeTextType="uniform" />
@@ -133,6 +137,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
+                android:textColor="@color/black"
                 android:maxLines="1"
                 android:text="Button"
                 app:autoSizeTextType="uniform" />
@@ -168,13 +173,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.2" />
+        app:layout_constraintGuide_percent="0.15" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.8" />
+        app:layout_constraintGuide_percent="0.85" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
