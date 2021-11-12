@@ -111,7 +111,7 @@ ADDED from D:\Android\TP_note\app\src\main\AndroidManifest.xml:22:9-25:61
 	android:screenOrientation
 		ADDED from D:\Android\TP_note\app\src\main\AndroidManifest.xml:25:13-49
 	android:exported
-		ADDED from D:\Android\TP_note\app\src\main\AndroidManifest.xml:24:13-36
+		ADDED from D:\Android\TP_note\app\src\main\AndroidManifest.xml:24:13-37
 	android:name
 		ADDED from D:\Android\TP_note\app\src\main\AndroidManifest.xml:23:13-41
 activity#com.example.PokemonQuizz.ScoresActivity

@@ -8,11 +8,9 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.view.Window;
 import android.view.animation.BounceInterpolator;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
@@ -45,9 +43,12 @@ public class ScoresActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
         getSupportActionBar().hide();
         super.onCreate(savedInstanceState);
-        createNewFile();
-        scoresSaved = new ScoresList();
-        readAncientList();
+        if (createNewFile()){
+            scoresSaved = new ScoresList();
+            saveFile();
+        } else {
+            readAncientList();
+        }
         setContentView(R.layout.activity_scores);
         newscore = findViewById(R.id.score);
         listView = findViewById(R.id.scoresList);
@@ -62,9 +63,7 @@ public class ScoresActivity extends AppCompatActivity {
 
         // android.R.layout.simple_list_item_1 is a constant predefined layout of Android.
         // used to create a ListView with simple ListItem (Only one TextView).
-
         adaptList();
-
         listView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
@@ -115,20 +114,23 @@ public class ScoresActivity extends AppCompatActivity {
     }
 
 
-    private void createNewFile() {
+    private boolean createNewFile() {
         File file = new File(getApplicationContext().getCacheDir(), filename);
         if(!file.exists()) {
             try {
                 file.createNewFile();
                 Log.e("test","File didn't exist, so I created it !");
+                return true;
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+        return false;
     }
 
 
     private void adaptList() {
+        Log.e("test","adapt en cours");
         ArrayAdapter<Score> arrayAdapter
                 = new ArrayAdapter<Score>(this, android.R.layout.simple_list_item_1 , scoresSaved.scores);
 
@@ -140,12 +142,13 @@ public class ScoresActivity extends AppCompatActivity {
         Gson gson = new Gson();
         try {
         Reader reader = new FileReader(getApplicationContext().getCacheDir()+"/"+filename);
-        if (gson.fromJson(reader,ScoresList.class) != null){
+        scoresSaved = gson.fromJson(reader,ScoresList.class);
+        /*if (gson.fromJson(reader,ScoresList.class) != null){
             scoresSaved = gson.fromJson(reader,ScoresList.class);
         }
         if (scoresSaved == null){
             scoresSaved = new ScoresList();
-        }
+        }*/
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

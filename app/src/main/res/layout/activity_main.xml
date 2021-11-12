@@ -39,13 +39,13 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:minHeight="48dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toStartOf="@+id/chrono"
         app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@android:drawable/stat_notify_sync"
-        tools:ignore="SpeakableTextPresentCheck,ImageContrastCheck,TouchTargetSizeCheck"
-        />
+        tools:ignore="SpeakableTextPresentCheck,ImageContrastCheck,TouchTargetSizeCheck" />
 
     <ImageButton
         android:id="@+id/display"
@@ -53,6 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
         android:minHeight="48dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.504"

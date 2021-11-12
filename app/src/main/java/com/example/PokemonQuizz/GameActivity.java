@@ -116,7 +116,7 @@ public class GameActivity extends AppCompatActivity {
         resName = resName.replace("_","");
         Log.e("name",resName);
         int num = Integer.parseInt(resName);
-        names.add(names_to_get.get(num-1));
+        names.add(names_to_get.remove(num-1));
         actualPokemonName = names.get(0);
         rndInt = rand.nextInt(names_to_get.size());
         names.add(names_to_get.remove(rndInt));
@@ -186,19 +186,19 @@ public class GameActivity extends AppCompatActivity {
         btn3.setClickable(false);
         btn4.setClickable(false);
         if(actualPokemonName.toString() == btn.getText().toString()){
-            Toast toast = Toast.makeText(this, "cévré", Toast.LENGTH_SHORT);
-            toast.show();
+            /*Toast toast = Toast.makeText(this, "cévré", Toast.LENGTH_SHORT);
+            toast.show();*/
 
             displayGoodAnswer();
         } else {
-            Toast toast = Toast.makeText(this, "céfo", Toast.LENGTH_SHORT);
-            toast.show();
+            /*Toast toast = Toast.makeText(this, "céfo", Toast.LENGTH_SHORT);
+            toast.show();*/
             displayBadAnswer();
         }
     }
 
     private void displayGoodAnswer() {
-        chrono.setTextColor(ContextCompat.getColor(this, R.color.green));
+        chrono.setTextColor(ContextCompat.getColor(this, R.color.deep_green));
         chrono.setText("Bien joué ! Nos équipes préparent le prochain !");
         displayColor();
         actualScore.addPoint();
