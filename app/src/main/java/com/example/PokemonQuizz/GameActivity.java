@@ -16,7 +16,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -36,11 +35,12 @@ public class GameActivity extends AppCompatActivity {
     public PokemonNames actualPokemonName;
     public List<PokemonNames> displayed_names = new ArrayList<>();
     public Button btn1, btn2, btn3, btn4;
-    public TextView chrono;
+    public TextView chrono, timelimit;
     public ProgressBar answerBar;
     public int nbfaults = 0;
     public Score actualScore;
-    public int maxfaults = 3;
+    public final int MAXFAULTS = 3;
+    CountDownTimer actualTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +58,7 @@ public class GameActivity extends AppCompatActivity {
         btn3 = findViewById(R.id.button3);
         btn4 = findViewById(R.id.button4);
         chrono = findViewById(R.id.chrono);
+        timelimit = findViewById(R.id.timelimit);
         answerBar = findViewById(R.id.answerBar);
         btn1.setBackgroundColor(getResources().getColor(R.color.red));
         btn2.setBackgroundColor(getResources().getColor(R.color.blue));
@@ -69,11 +70,13 @@ public class GameActivity extends AppCompatActivity {
         //TODO on roll roulette
         getRndImg();
         getPokemonName();
+        launchTimer();
         reload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getRndImg();
                 getPokemonName();
+                launchTimer();
             }
         });
         display.setOnClickListener(new View.OnClickListener(){
@@ -104,6 +107,35 @@ public class GameActivity extends AppCompatActivity {
                 checkResult(btn4);
             }
         });
+    }
+
+    private void launchTimer() {
+        //TODO Timer
+        int count = checkTimeLimitAvailable();
+        actualTimer = new CountDownTimer(count, 1) {
+
+            public void onTick(long millisUntilFinished) {
+                timelimit.setText("Il vous reste : " + millisUntilFinished / 1000 + " s");
+            }
+
+            public void onFinish() {
+                displayBadAnswer();
+            }
+        }.start();
+    }
+
+    private int checkTimeLimitAvailable() {
+        int i = 21000;
+        if(actualScore.score >= 50){
+            i = 16000;
+        }
+        if (actualScore.score >= 100){
+            i = 11000;
+        }
+        if ( actualScore.score >= 200){
+            i = 6000;
+        }
+        return i;
     }
 
     private void getPokemonName() {
@@ -181,6 +213,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void checkResult(Button btn) {
+        actualTimer.cancel();
         btn1.setClickable(false);
         btn2.setClickable(false);
         btn3.setClickable(false);
@@ -230,20 +263,23 @@ public class GameActivity extends AppCompatActivity {
             }
 
             public void onFinish() {
-                displayColor();
-                answerBar.setProgress(100);
-                reload.callOnClick();
-                if(nbfaults>=maxfaults){
+
+                if(nbfaults>= MAXFAULTS){
+                    actualTimer = null;
                     Log.e("Hello","YOU LOSE");
                     Intent intent = new Intent(GameActivity.this, ScoresActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra("nouveauscore",true);
                     intent.putExtra("score",actualScore);
                     getApplicationContext().startActivity(intent);
+                } else {
+                    displayColor();
+                    answerBar.setProgress(100);
+                    reload.callOnClick();
+                    answerBar.setProgress(0);
+                    chrono.setText("");
+                    reactiveButtons();
                 }
-                answerBar.setProgress(0);
-                chrono.setText("");
-                reactiveButtons();
             }
         }.start();
     }

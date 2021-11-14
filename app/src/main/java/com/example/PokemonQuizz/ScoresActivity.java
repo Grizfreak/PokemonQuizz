@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.view.animation.BounceInterpolator;
 import android.widget.ArrayAdapter;
@@ -59,6 +60,8 @@ public class ScoresActivity extends AppCompatActivity {
             newscore.setText(newScoreReceived.name + " | " + newScoreReceived.score);
             scoresSaved.scores.add(newScoreReceived);
             saveFile();
+        } else {
+            newscore.setVisibility(View.GONE);
         }
 
         // android.R.layout.simple_list_item_1 is a constant predefined layout of Android.
