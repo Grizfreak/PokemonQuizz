@@ -58,7 +58,7 @@ public class ScoresActivity extends AppCompatActivity {
         newScoreReceived = (Score) it.getSerializableExtra("score");
         if(newscoreget) {
             newscore.setText(newScoreReceived.name + " | " + newScoreReceived.score);
-            scoresSaved.scores.add(newScoreReceived);
+            scoresSaved.addScore(newScoreReceived);
             saveFile();
         } else {
             newscore.setVisibility(View.GONE);
@@ -72,7 +72,7 @@ public class ScoresActivity extends AppCompatActivity {
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
                 switch (index) {
                     case 0:
-                        scoresSaved.scores.remove(position);
+                        scoresSaved.removeScore(position);
                         adaptList();
                         saveFile();
                         break;

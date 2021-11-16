@@ -28,7 +28,7 @@ import java.util.Random;
 public class GameActivity extends AppCompatActivity {
 
     public TypedArray imgs_black ;
-    public ImageView pokemon;
+    public ImageView pokemon, scoresView;
     public ImageButton reload;
     public boolean displaycolor;
     public ImageButton display;
@@ -60,11 +60,12 @@ public class GameActivity extends AppCompatActivity {
         chrono = findViewById(R.id.chrono);
         timelimit = findViewById(R.id.timelimit);
         answerBar = findViewById(R.id.answerBar);
+        scoresView = findViewById(R.id.scoresView);
         btn1.setBackgroundColor(getResources().getColor(R.color.red));
         btn2.setBackgroundColor(getResources().getColor(R.color.blue));
         btn3.setBackgroundColor(getResources().getColor(R.color.yellow));
         btn4.setBackgroundColor(getResources().getColor(R.color.green));
-
+        changeImage();
         imgs_black = getResources().obtainTypedArray(R.array.pokemon_black_images_array);
         displayed_names = Arrays.asList(PokemonNames.values());
         //TODO on roll roulette
@@ -256,6 +257,7 @@ public class GameActivity extends AppCompatActivity {
         chrono.setText("Dommage, ce pokémon était "+actualPokemonName.toString().toUpperCase(Locale.ROOT));
         displayColor();
         nbfaults++;
+        changeImage();
         new CountDownTimer(3000, 1) {
 
             public void onTick(long millisUntilFinished) {
@@ -282,6 +284,23 @@ public class GameActivity extends AppCompatActivity {
                 }
             }
         }.start();
+    }
+
+    private void changeImage() {
+        switch(nbfaults){
+            case 1 :
+                scoresView.setImageResource(R.drawable.pixel_balls_2);
+                break;
+            case 2 :
+                scoresView.setImageResource(R.drawable.pixel_balls_1);
+                break;
+            case 3:
+                scoresView.setImageResource(R.drawable.pixel_balls_0);
+                break;
+            default :
+                scoresView.setImageResource(R.drawable.pixel_balls_3);
+                break;
+        }
     }
 
     private void reactiveButtons() {
