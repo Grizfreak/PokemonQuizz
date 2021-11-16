@@ -41,6 +41,7 @@ public class ScoresActivity extends AppCompatActivity {
     public ImageView scoresImage;
     public final String filename="scores.xml";
     public SwipeMenuListView listView;
+    public MusicManager musicM;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,8 @@ public class ScoresActivity extends AppCompatActivity {
         listView = findViewById(R.id.scoresList);
         scoresImage = findViewById(R.id.scoresImage);
         Intent it = getIntent();
+        musicM = new MusicManager(this);
+        musicM.playScoresMusic();
         newscoreget = it.getBooleanExtra("nouveauscore",false);
         newScoreReceived = (Score) it.getSerializableExtra("score");
         if(newscoreget) {
@@ -206,5 +209,28 @@ public class ScoresActivity extends AppCompatActivity {
     {
         Intent intent = new Intent(this,MenuActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        musicM.start();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        musicM.pause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        musicM.pause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        musicM.pause();
     }
 }

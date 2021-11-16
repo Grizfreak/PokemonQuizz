@@ -42,6 +42,7 @@ public class GameActivity extends AppCompatActivity {
     public Score actualScore;
     public final int MAXFAULTS = 3;
     CountDownTimer actualTimer;
+    public MusicManager musicM;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +68,7 @@ public class GameActivity extends AppCompatActivity {
         scoresView = findViewById(R.id.scoresView);
         scoresText = findViewById(R.id.scoresText);
         scoresText.setText(String.valueOf(actualScore.score));
+        musicM = new MusicManager(this);
         btn1.setBackgroundColor(getResources().getColor(R.color.red));
         btn2.setBackgroundColor(getResources().getColor(R.color.blue));
         btn3.setBackgroundColor(getResources().getColor(R.color.yellow));
@@ -116,6 +118,11 @@ public class GameActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed()
+    {
+    }
+
     private void launchTimer() {
         int count = checkTimeLimitAvailable();
         actualTimer = new CountDownTimer(count, 1) {
@@ -141,6 +148,7 @@ public class GameActivity extends AppCompatActivity {
         if ( actualScore.score >= 200){
             i = 6000;
         }
+        musicM.playLevel(actualScore.score);
         return i;
     }
 
@@ -321,5 +329,28 @@ public class GameActivity extends AppCompatActivity {
         long progress = ((3000-millisUntilFinished) * maxValue) / 3000; // (3000 * answerBar.getProgress())/100 = millisUntilFinished
         Log.e("test", String.valueOf(progress));
         answerBar.setProgress((int) progress);
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        musicM.start();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        musicM.pause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        musicM.pause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        musicM.pause();
     }
 }

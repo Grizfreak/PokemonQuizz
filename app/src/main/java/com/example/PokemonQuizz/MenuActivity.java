@@ -21,6 +21,30 @@ public class MenuActivity extends AppCompatActivity {
     public LinearLayout playbox;
     public Button changeScene,playButton,scoresButton, guideButton;
     public TextView pseudoEdit;
+    public MusicManager musicM;
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        musicM.start();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        musicM.pause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        musicM.pause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        musicM.pause();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +62,8 @@ public class MenuActivity extends AppCompatActivity {
         pseudoEdit = findViewById(R.id.pseudoEntry);
         scoresButton = findViewById(R.id.ScoresButton);
         guideButton = findViewById(R.id.guideButton);
-
+        musicM = new MusicManager(this);
+        musicM.playMenuMusic();
         pseudoEdit.setGravity(Gravity.CENTER_HORIZONTAL);
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
