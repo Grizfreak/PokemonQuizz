@@ -129,7 +129,7 @@ public class ScoresActivity extends AppCompatActivity {
                 scoresImage.setImageResource(R.drawable.third);
                 break;
             default:
-                scoresImage.setImageResource(R.drawable.third);
+                scoresImage.setImageResource(R.drawable.fourth);
                 break;
         }
     }

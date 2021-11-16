@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">PokemonQuizz</string>
+    <string name="ok">J\'ai bien compris</string>
 </resources>
