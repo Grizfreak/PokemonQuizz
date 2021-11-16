@@ -11,6 +11,7 @@ import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -35,7 +36,7 @@ public class GameActivity extends AppCompatActivity {
     public PokemonNames actualPokemonName;
     public List<PokemonNames> displayed_names = new ArrayList<>();
     public Button btn1, btn2, btn3, btn4;
-    public TextView chrono, timelimit;
+    public TextView chrono, timelimit, scoresText;
     public ProgressBar answerBar;
     public int nbfaults = 0;
     public Score actualScore;
@@ -44,8 +45,11 @@ public class GameActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
+        //Remove title bar
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         getSupportActionBar().hide();
+        //Remove notification bar
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Intent intent = getIntent();
@@ -61,6 +65,8 @@ public class GameActivity extends AppCompatActivity {
         timelimit = findViewById(R.id.timelimit);
         answerBar = findViewById(R.id.answerBar);
         scoresView = findViewById(R.id.scoresView);
+        scoresText = findViewById(R.id.scoresText);
+        scoresText.setText(String.valueOf(actualScore.score));
         btn1.setBackgroundColor(getResources().getColor(R.color.red));
         btn2.setBackgroundColor(getResources().getColor(R.color.blue));
         btn3.setBackgroundColor(getResources().getColor(R.color.yellow));
@@ -111,7 +117,6 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void launchTimer() {
-        //TODO Timer
         int count = checkTimeLimitAvailable();
         actualTimer = new CountDownTimer(count, 1) {
 
@@ -236,6 +241,7 @@ public class GameActivity extends AppCompatActivity {
         chrono.setText("Bien joué ! Nos équipes préparent le prochain !");
         displayColor();
         actualScore.addPoint();
+        scoresText.setText(String.valueOf(actualScore.score));
         new CountDownTimer(3000, 1) {
 
             public void onTick(long millisUntilFinished) {

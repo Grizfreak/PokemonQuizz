@@ -1,6 +1,7 @@
 package com.example.PokemonQuizz;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.animation.BounceInterpolator;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
@@ -19,6 +21,7 @@ import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.google.gson.Gson;
+import com.plattysoft.leonids.ParticleSystem;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -35,12 +38,12 @@ public class ScoresActivity extends AppCompatActivity {
     public ScoresList scoresSaved;
     public TextView newscore;
     public boolean newscoreget;
+    public ImageView scoresImage;
     public final String filename="scores.xml";
     public SwipeMenuListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //TODO good Save and load feature
         requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
         getSupportActionBar().hide();
         super.onCreate(savedInstanceState);
@@ -51,17 +54,15 @@ public class ScoresActivity extends AppCompatActivity {
             readAncientList();
         }
         setContentView(R.layout.activity_scores);
-        newscore = findViewById(R.id.score);
         listView = findViewById(R.id.scoresList);
+        scoresImage = findViewById(R.id.scoresImage);
         Intent it = getIntent();
         newscoreget = it.getBooleanExtra("nouveauscore",false);
         newScoreReceived = (Score) it.getSerializableExtra("score");
         if(newscoreget) {
-            newscore.setText(newScoreReceived.name + " | " + newScoreReceived.score);
             scoresSaved.addScore(newScoreReceived);
+            displayImage();
             saveFile();
-        } else {
-            newscore.setVisibility(View.GONE);
         }
 
         // android.R.layout.simple_list_item_1 is a constant predefined layout of Android.
@@ -102,6 +103,35 @@ public class ScoresActivity extends AppCompatActivity {
         };
         // set creator
         listView.setMenuCreator(creator);
+    }
+
+    private void displayImage() {
+        int position = 4;
+        for (Score sc : scoresSaved.scores){
+            if (sc.equals(newScoreReceived)){
+                position = scoresSaved.scores.indexOf(sc);
+            }
+        }
+        switch(position){
+            case 0 :
+
+                ParticleSystem pts = new ParticleSystem(this, 300, R.drawable.confeti2, 10000);
+                pts.setSpeedModuleAndAngleRange(0f, 0.3f, 0, 0);
+                pts.setRotationSpeed(144);
+                pts.setAcceleration(0.00008f, 90);
+                pts.emit(findViewById(R.id.emiter_top_left), 8);
+                scoresImage.setImageResource(R.drawable.first);
+                break;
+            case 1 :
+                scoresImage.setImageResource(R.drawable.second);
+                break;
+            case 2 :
+                scoresImage.setImageResource(R.drawable.third);
+                break;
+            default:
+                scoresImage.setImageResource(R.drawable.third);
+                break;
+        }
     }
 
 

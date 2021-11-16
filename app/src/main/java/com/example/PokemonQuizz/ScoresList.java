@@ -21,7 +21,7 @@ public class ScoresList {
         sort();
     }
 
-    public void sort(){
+    private void sort(){
         Collections.sort(scores);
     }
 }
