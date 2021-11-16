@@ -2,7 +2,9 @@ package com.example.PokemonQuizz;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActionBar;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -30,7 +32,6 @@ public class MenuActivity extends AppCompatActivity {
         scoresButton = findViewById(R.id.ScoresButton);
 
         pseudoEdit.setGravity(Gravity.CENTER_HORIZONTAL);
-
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

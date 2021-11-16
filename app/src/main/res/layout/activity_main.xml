@@ -25,6 +25,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/pokemon_solid"
         android:gravity="center_horizontal"
+        android:hint="Il vous reste 15 secondes"
         android:maxLines="1"
         android:textSize="20dp"
         app:autoSizeTextType="uniform"
@@ -32,22 +33,22 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline4"
-        app:layout_constraintTop_toTopOf="@+id/imageView2"
-        app:layout_constraintVertical_bias="0.931"
-        android:hint="Il vous reste 15 secondes"/>
+        app:layout_constraintTop_toTopOf="@+id/guideline7"
+        app:layout_constraintVertical_bias="0.421" />
 
     <ImageView
         android:id="@+id/pokemonquestion"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="180dp"
         android:adjustViewBounds="true"
         android:scaleType="centerInside"
+        app:layout_constraintBottom_toTopOf="@+id/guideline11"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="@+id/guideline5"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.468"
         app:layout_constraintStart_toStartOf="@+id/guideline4"
-        app:layout_constraintTop_toTopOf="@+id/imageView2"
+        app:layout_constraintTop_toTopOf="@+id/guideline10"
+        app:layout_constraintVertical_bias="0.0"
         tools:srcCompat="@drawable/_1" />
 
     <ImageButton
@@ -225,5 +226,18 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.15"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.25"/>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.60"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
