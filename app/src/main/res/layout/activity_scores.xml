@@ -15,8 +15,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    <ImageView
-        android:id="@+id/imageView2"
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/gifImage2"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="@id/guideline17"
@@ -25,7 +26,7 @@
         app:layout_constraintTop_toTopOf="@id/guideline18"
         android:src="@drawable/pokedex_background"
         android:scaleType = "centerCrop"
-        android:contentDescription="TODO" />
+        android:contentDescription="@string/todo" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline9"
@@ -84,7 +85,8 @@
         app:layout_constraintStart_toStartOf="@+id/guideline12"
         app:layout_constraintTop_toTopOf="@+id/guideline14"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/fourth" />
+        app:srcCompat="@drawable/fourth"
+        android:contentDescription="@string/todo" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline15"
@@ -110,6 +112,18 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.0" />
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/gifImage"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/guideline17"
+        app:layout_constraintEnd_toEndOf="@id/guideline16"
+        app:layout_constraintStart_toStartOf="@id/guideline15"
+        app:layout_constraintTop_toTopOf="@id/guideline18"
+        android:src="@drawable/confetti_40"
+        android:scaleType = "centerCrop"
+        android:contentDescription="@string/todo" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

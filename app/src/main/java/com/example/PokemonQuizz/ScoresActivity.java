@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,7 +23,6 @@ import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.google.gson.Gson;
-import com.plattysoft.leonids.ParticleSystem;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -32,6 +32,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.Objects;
+
+import pl.droidsonroids.gif.GifImageView;
 
 public class ScoresActivity extends AppCompatActivity {
 
@@ -43,6 +45,7 @@ public class ScoresActivity extends AppCompatActivity {
     public final String filename="scores.xml";
     public SwipeMenuListView listView;
     public MusicManager musicM;
+    public GifImageView gifImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +66,8 @@ public class ScoresActivity extends AppCompatActivity {
         musicM.playScoresMusic();
         newscoreget = it.getBooleanExtra("nouveauscore",false);
         newScoreReceived = (Score) it.getSerializableExtra("score");
+        gifImage = findViewById(R.id.gifImage);
+        gifImage.setVisibility(View.GONE);
         if(newscoreget) {
             scoresSaved.addScore(newScoreReceived);
             displayImage();
@@ -110,19 +115,17 @@ public class ScoresActivity extends AppCompatActivity {
         }
         switch(position){
             case 0 :
-                ParticleSystem pts = new ParticleSystem(this, 300, R.drawable.confeti2, 10000);
-                pts.setSpeedModuleAndAngleRange(0f, 0.3f, 0, 0);
-                pts.setRotationSpeed(144);
-                pts.setAcceleration(0.00008f, 90);
-                pts.emit(findViewById(R.id.emiter_top_left), 8);
+                gifImage.setVisibility(View.VISIBLE);
                 scoresImage.setImageResource(R.drawable.first);
                 musicM.playOnScoresPoping();
                 break;
             case 1 :
+                gifImage.setVisibility(View.VISIBLE);
                 musicM.playOnScoresPoping();
                 scoresImage.setImageResource(R.drawable.second);
                 break;
             case 2 :
+                gifImage.setVisibility(View.VISIBLE);
                 musicM.playOnScoresPoping();
                 scoresImage.setImageResource(R.drawable.third);
                 break;
