@@ -32,3 +32,11 @@ local.properties
 .Trashes
 ehthumbs.db
 Thumbs.db
+/app/build/outputs/logs/manifest-merger-release-report.txt
+/app/build/outputs/apk/debug/output-metadata.json
+/app/build/outputs/release/output-metadata.json
+/app/build/outputs/debug/PokemonQuizz-debug-2021-11-17-11-07-07.apk
+/app/build/outputs/apk/debug/PokemonQuizz-debug-2021-11-17-12-58-17.apk
+/app/build/outputs/release/PokemonQuizz-release.apk
+/.idea/inspectionProfiles/Project_Default.xml
+/app/build/outputs/sdk-dependencies/release/sdkDependencies.txt
