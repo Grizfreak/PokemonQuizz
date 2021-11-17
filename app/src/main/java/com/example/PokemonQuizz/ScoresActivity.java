@@ -3,6 +3,7 @@ package com.example.PokemonQuizz;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -30,6 +31,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.Objects;
 
 public class ScoresActivity extends AppCompatActivity {
 
@@ -45,7 +47,7 @@ public class ScoresActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
         super.onCreate(savedInstanceState);
         if (createNewFile()){
             scoresSaved = new ScoresList();
@@ -70,38 +72,30 @@ public class ScoresActivity extends AppCompatActivity {
         // android.R.layout.simple_list_item_1 is a constant predefined layout of Android.
         // used to create a ListView with simple ListItem (Only one TextView).
         adaptList();
-        listView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
-                switch (index) {
-                    case 0:
-                        scoresSaved.removeScore(position);
-                        adaptList();
-                        saveFile();
-                        break;
-                }
-                // false : close the menu; true : not close the menu
-                return false;
+        listView.setOnMenuItemClickListener((position, menu, index) -> {
+            if (index == 0) {
+                scoresSaved.removeScore(position);
+                adaptList();
+                saveFile();
             }
+            // false : close the menu; true : not close the menu
+            return false;
         });
         listView.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
         listView.setCloseInterpolator(new BounceInterpolator());
-        SwipeMenuCreator creator = new SwipeMenuCreator() {
-            @Override
-            public void create(SwipeMenu menu) {
-                // create "delete" item
-                SwipeMenuItem deleteItem = new SwipeMenuItem(
-                        getApplicationContext());
-                // set item background
-                deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
-                        0x3F, 0x25)));
-                // set item width
-                deleteItem.setWidth(dp2px(menu.getContext(),90));
-                // set a icon
-                deleteItem.setIcon(getApplicationContext().getResources().getDrawable(R.drawable.ic_delete,getTheme()));
-                // add to menu
-                menu.addMenuItem(deleteItem);
-            }
+        @SuppressLint("UseCompatLoadingForDrawables") SwipeMenuCreator creator = menu -> {
+            // create "delete" item
+            SwipeMenuItem deleteItem = new SwipeMenuItem(
+                    getApplicationContext());
+            // set item background
+            deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
+                    0x3F, 0x25)));
+            // set item width
+            deleteItem.setWidth(dp2px(menu.getContext(),90));
+            // set a icon
+            deleteItem.setIcon(getApplicationContext().getResources().getDrawable(R.drawable.ic_delete,getTheme()));
+            // add to menu
+            menu.addMenuItem(deleteItem);
         };
         // set creator
         listView.setMenuCreator(creator);
@@ -169,7 +163,7 @@ public class ScoresActivity extends AppCompatActivity {
     private void adaptList() {
         Log.e("test","adapt en cours");
         ArrayAdapter<Score> arrayAdapter
-                = new ArrayAdapter<Score>(this, android.R.layout.simple_list_item_1 , scoresSaved.scores);
+                = new ArrayAdapter<>(this, R.layout.list_black_text, R.id.list_content , scoresSaved.scores);
 
         listView.setAdapter(arrayAdapter);
     }
