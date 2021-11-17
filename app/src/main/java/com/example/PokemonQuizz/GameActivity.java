@@ -95,24 +95,28 @@ public class GameActivity extends AppCompatActivity {
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                musicM.playButtonSound();
                 checkResult(btn1);
             }
         });
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                musicM.playButtonSound();
                 checkResult(btn2);
             }
         });
         btn3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                musicM.playButtonSound();
                 checkResult(btn3);
             }
         });
         btn4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                musicM.playButtonSound();
                 checkResult(btn4);
             }
         });
@@ -254,6 +258,9 @@ public class GameActivity extends AppCompatActivity {
 
             public void onTick(long millisUntilFinished) {
                 displayProgress(millisUntilFinished);
+                if(millisUntilFinished==1500){
+                    musicM.playPokedexRoll();
+                }
             }
 
             public void onFinish() {
@@ -276,6 +283,9 @@ public class GameActivity extends AppCompatActivity {
 
             public void onTick(long millisUntilFinished) {
                 displayProgress(millisUntilFinished);
+                if(millisUntilFinished==1500){
+                    musicM.playPokedexRoll();
+                }
             }
 
             public void onFinish() {
@@ -332,8 +342,8 @@ public class GameActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPostResume() {
-        super.onPostResume();
+    protected void onResume() {
+        super.onResume();
         musicM.start();
     }
     @Override

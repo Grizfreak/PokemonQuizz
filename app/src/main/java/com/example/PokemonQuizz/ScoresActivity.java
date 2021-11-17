@@ -36,7 +36,6 @@ public class ScoresActivity extends AppCompatActivity {
 
     public Score newScoreReceived;
     public ScoresList scoresSaved;
-    public TextView newscore;
     public boolean newscoreget;
     public ImageView scoresImage;
     public final String filename="scores.xml";
@@ -117,18 +116,20 @@ public class ScoresActivity extends AppCompatActivity {
         }
         switch(position){
             case 0 :
-
                 ParticleSystem pts = new ParticleSystem(this, 300, R.drawable.confeti2, 10000);
                 pts.setSpeedModuleAndAngleRange(0f, 0.3f, 0, 0);
                 pts.setRotationSpeed(144);
                 pts.setAcceleration(0.00008f, 90);
                 pts.emit(findViewById(R.id.emiter_top_left), 8);
                 scoresImage.setImageResource(R.drawable.first);
+                musicM.playOnScoresPoping();
                 break;
             case 1 :
+                musicM.playOnScoresPoping();
                 scoresImage.setImageResource(R.drawable.second);
                 break;
             case 2 :
+                musicM.playOnScoresPoping();
                 scoresImage.setImageResource(R.drawable.third);
                 break;
             default:
@@ -212,8 +213,8 @@ public class ScoresActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPostResume() {
-        super.onPostResume();
+    protected void onResume() {
+        super.onResume();
         musicM.start();
     }
     @Override
