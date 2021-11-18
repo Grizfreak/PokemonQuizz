@@ -14,7 +14,6 @@ public class MusicManager {
     public int IDrandomize_sound;
     public int IDscores_poping;
     public boolean loaded = false;
-    //TODO SOUNDPOOL FOR BUTTONS
     public MusicManager(AppCompatActivity pcontext){
         context = pcontext;
         buildSoundpool(context);
@@ -30,12 +29,7 @@ public class MusicManager {
         builder.setAudioAttributes(audioAttrib).setMaxStreams(5);
         this.soundPool = builder.build();
         // When Sound Pool load complete.
-        this.soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
-            @Override
-            public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
-                loaded = true;
-            }
-        });
+        this.soundPool.setOnLoadCompleteListener((soundPool, sampleId, status) -> loaded = true);
 
         // Load sound file (destroy.wav) into SoundPool.
         this.IDbutton_pressed = this.soundPool.load(context, R.raw.button_pressed,1);
