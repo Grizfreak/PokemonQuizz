@@ -20,59 +20,83 @@ import android.widget.TextView;
 
 import java.util.Objects;
 
+/**
+ * Activity launched at start and used to access differents Activities
+ */
 public class MenuActivity extends AppCompatActivity {
 
+    /**
+     * Attributes declaration
+     */
     public LinearLayout playbox;
-    public Button changeScene,playButton,scoresButton, guideButton;
+    public Button changeScene, playButton, scoresButton, guideButton, creditsButton;
     public TextView pseudoEdit;
     public MusicManager musicM;
 
+    /**
+     * Function used to start playing music
+     */
     @Override
     protected void onResume() {
         super.onResume();
         musicM.start();
     }
+
+    /**
+     * Function used to stop playing music
+     */
     @Override
     protected void onPause() {
         super.onPause();
         musicM.pause();
     }
 
+    /**
+     * Function used to stop playing music
+     */
     @Override
     protected void onStop() {
         super.onStop();
         musicM.pause();
     }
 
+    /**
+     * Function used to stop playing music
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
         musicM.pause();
     }
 
+    /**
+     * Default function used at creation of the Activity
+     *
+     * @param savedInstanceState bundle used for app
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //Remove title bar
+        //Remove title bar && Remove notification bar
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         Objects.requireNonNull(getSupportActionBar()).hide();
-        //Remove notification bar
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_menu);
+
+        //Attributes creation
         playbox = findViewById(R.id.playbox);
         changeScene = findViewById(R.id.changeScene);
         playButton = findViewById(R.id.playButton);
         pseudoEdit = findViewById(R.id.pseudoEntry);
         scoresButton = findViewById(R.id.ScoresButton);
         guideButton = findViewById(R.id.guideButton);
+        creditsButton = findViewById(R.id.Credits);
         musicM = new MusicManager(this);
-        try {
-            Thread.sleep(50);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         musicM.playMenuMusic();
         pseudoEdit.setGravity(Gravity.CENTER_HORIZONTAL);
+
+        //Setting up Listeners on all buttons
         playButton.setOnClickListener(view -> {
             musicM.playButtonSound();
             playbox.setVisibility(View.VISIBLE);
@@ -81,8 +105,8 @@ public class MenuActivity extends AppCompatActivity {
         scoresButton.setOnClickListener(view -> {
             musicM.playButtonSound();
             musicM.pause();
-            Intent intent = new Intent(view.getContext(),ScoresActivity.class);
-            intent.putExtra("nouveauscore",false);
+            Intent intent = new Intent(view.getContext(), ScoresActivity.class);
+            intent.putExtra("nouveauscore", false);
             view.getContext().startActivity(intent);
         });
 
@@ -96,9 +120,22 @@ public class MenuActivity extends AppCompatActivity {
                     // Specifying a listener allows you to take an action before dismissing the dialog.
                     // The dialog is automatically dismissed when a dialog button is clicked.
                     .setPositiveButton(R.string.ok, (dialog, which) -> {
-                        // Continue with delete operation
                     })
                     .setIcon(R.drawable.prof_oak_icon)
+                    .show();
+        });
+
+        creditsButton.setOnClickListener(view -> {
+            new AlertDialog.Builder(view.getContext())
+                    .setTitle("Crédits et mentions")
+                    .setMessage("Cette appplication a été réalisée par Antonin AUBERT (moi), Etudiant en 2ème année de DUT Informatique à l'IUT de Laval ! " +
+                            "Cette oeuvre est la propriété de Le Mans Université et relève de la législation française et internationale sur le droit d’auteur et la propriété intellectuelle. " +
+                            "Amusez-vous bien !")
+
+                    .setIcon(R.drawable.logo_iut)
+                    .setPositiveButton(R.string.ok, (dialog, which) -> {
+
+                    })
                     .show();
         });
 
@@ -109,8 +146,7 @@ public class MenuActivity extends AppCompatActivity {
                 Intent intent = new Intent(view.getContext(), GameActivity.class);
                 intent.putExtra("name", pseudoEdit.getText().toString().trim());
                 view.getContext().startActivity(intent);
-            }
-            else {
+            } else {
                 pseudoEdit.setError("Veuillez entrer un nom valide");
             }
 

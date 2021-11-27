@@ -42,7 +42,7 @@ public class ScoresActivity extends AppCompatActivity {
     public ScoresList scoresSaved;
     public boolean newscoreget;
     public ImageView scoresImage;
-    public final String filename="scores.xml";
+    public final String filename = "scores.xml";
     public SwipeMenuListView listView;
     public MusicManager musicM;
     public GifImageView gifImage;
@@ -52,7 +52,7 @@ public class ScoresActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
         Objects.requireNonNull(getSupportActionBar()).hide();
         super.onCreate(savedInstanceState);
-        if (createNewFile()){
+        if (createNewFile()) {
             scoresSaved = new ScoresList();
             saveFile();
         } else {
@@ -64,11 +64,11 @@ public class ScoresActivity extends AppCompatActivity {
         Intent it = getIntent();
         musicM = new MusicManager(this);
         musicM.playScoresMusic();
-        newscoreget = it.getBooleanExtra("nouveauscore",false);
+        newscoreget = it.getBooleanExtra("nouveauscore", false);
         newScoreReceived = (Score) it.getSerializableExtra("score");
         gifImage = findViewById(R.id.gifImage);
         gifImage.setVisibility(View.GONE);
-        if(newscoreget) {
+        if (newscoreget) {
             scoresSaved.addScore(newScoreReceived);
             displayImage();
             saveFile();
@@ -96,9 +96,9 @@ public class ScoresActivity extends AppCompatActivity {
             deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
                     0x3F, 0x25)));
             // set item width
-            deleteItem.setWidth(dp2px(menu.getContext(),90));
+            deleteItem.setWidth(dp2px(menu.getContext(), 90));
             // set a icon
-            deleteItem.setIcon(getApplicationContext().getResources().getDrawable(R.drawable.ic_delete,getTheme()));
+            deleteItem.setIcon(getApplicationContext().getResources().getDrawable(R.drawable.ic_delete, getTheme()));
             // add to menu
             menu.addMenuItem(deleteItem);
         };
@@ -108,23 +108,23 @@ public class ScoresActivity extends AppCompatActivity {
 
     private void displayImage() {
         int position = 4;
-        for (Score sc : scoresSaved.scores){
-            if (sc.equals(newScoreReceived)){
+        for (Score sc : scoresSaved.scores) {
+            if (sc.equals(newScoreReceived)) {
                 position = scoresSaved.scores.indexOf(sc);
             }
         }
-        switch(position){
-            case 0 :
+        switch (position) {
+            case 0:
                 gifImage.setVisibility(View.VISIBLE);
                 scoresImage.setImageResource(R.drawable.first);
                 musicM.playOnScoresPoping();
                 break;
-            case 1 :
+            case 1:
                 gifImage.setVisibility(View.VISIBLE);
                 musicM.playOnScoresPoping();
                 scoresImage.setImageResource(R.drawable.second);
                 break;
-            case 2 :
+            case 2:
                 gifImage.setVisibility(View.VISIBLE);
                 musicM.playOnScoresPoping();
                 scoresImage.setImageResource(R.drawable.third);
@@ -140,7 +140,7 @@ public class ScoresActivity extends AppCompatActivity {
         try {
             Gson gson = new Gson();
             String json = gson.toJson(scoresSaved);
-            Log.e("json",json);
+            Log.e("json", json);
             write(json);
         } catch (IOException e) {
             e.printStackTrace();
@@ -150,10 +150,10 @@ public class ScoresActivity extends AppCompatActivity {
 
     private boolean createNewFile() {
         File file = new File(getApplicationContext().getCacheDir(), filename);
-        if(!file.exists()) {
+        if (!file.exists()) {
             try {
                 file.createNewFile();
-                Log.e("test","File didn't exist, so I created it !");
+                Log.e("test", "File didn't exist, so I created it !");
                 return true;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -164,9 +164,8 @@ public class ScoresActivity extends AppCompatActivity {
 
 
     private void adaptList() {
-        Log.e("test","adapt en cours");
         ArrayAdapter<Score> arrayAdapter
-                = new ArrayAdapter<>(this, R.layout.list_black_text, R.id.list_content , scoresSaved.scores);
+                = new ArrayAdapter<>(this, R.layout.list_black_text, R.id.list_content, scoresSaved.scores);
 
         listView.setAdapter(arrayAdapter);
     }
@@ -175,8 +174,8 @@ public class ScoresActivity extends AppCompatActivity {
     private void readAncientList() {
         Gson gson = new Gson();
         try {
-        Reader reader = new FileReader(getApplicationContext().getCacheDir()+"/"+filename);
-        scoresSaved = gson.fromJson(reader,ScoresList.class);
+            Reader reader = new FileReader(getApplicationContext().getCacheDir() + "/" + filename);
+            scoresSaved = gson.fromJson(reader, ScoresList.class);
         /*if (gson.fromJson(reader,ScoresList.class) != null){
             scoresSaved = gson.fromJson(reader,ScoresList.class);
         }
@@ -189,7 +188,7 @@ public class ScoresActivity extends AppCompatActivity {
 
     }
 
-    private void write(String json) throws IOException{
+    private void write(String json) throws IOException {
         File file = new File(getApplicationContext().getCacheDir(), filename);
         FileWriter fw = new FileWriter(file.getAbsoluteFile());
         BufferedWriter bw = new BufferedWriter(fw);
@@ -203,9 +202,8 @@ public class ScoresActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed()
-    {
-        Intent intent = new Intent(this,MenuActivity.class);
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MenuActivity.class);
         startActivity(intent);
     }
 
@@ -214,6 +212,7 @@ public class ScoresActivity extends AppCompatActivity {
         super.onResume();
         musicM.start();
     }
+
     @Override
     protected void onPause() {
         super.onPause();

@@ -24,11 +24,18 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Random;
 
+/**
+ * Activity launched at start and used to access differents Activities
+ */
 public class GameActivity extends AppCompatActivity {
 
-    public TypedArray imgs_black ;
+    /**
+     * Attributes declaration
+     */
+    public TypedArray imgs_black;
     public ImageView pokemon, scoresView;
     public ImageButton reload;
     public boolean displaycolor;
@@ -44,17 +51,26 @@ public class GameActivity extends AppCompatActivity {
     CountDownTimer actualTimer;
     public MusicManager musicM;
 
+    /**
+     * Default function used at creation of the Activity
+     *
+     * @param savedInstanceState bundle used for app
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //Remove title bar
+        //Remove title bar && Remove notification bar
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getSupportActionBar().hide();
-        //Remove notification bar
+        Objects.requireNonNull(getSupportActionBar()).hide();
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
+
+        //Getting Parameters from Intent
         Intent intent = getIntent();
         actualScore = new Score(intent.getExtras().getString("name"));
+
+        //Describing attributes
         pokemon = findViewById(R.id.pokemonquestion);
         display = findViewById(R.id.display);
         reload = findViewById(R.id.reload);
@@ -75,22 +91,30 @@ public class GameActivity extends AppCompatActivity {
         btn4.setBackgroundColor(getResources().getColor(R.color.green));
         changeImage();
         imgs_black = getResources().obtainTypedArray(R.array.pokemon_black_images_array);
+
+        //Creating List of names
         displayed_names = Arrays.asList(PokemonNames.values());
-        //TODO on roll roulette
+
+        //Generating
         getRndImg();
         getPokemonName();
         launchTimer();
+
+        //Setting up buttons
         reload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //Generating
                 getRndImg();
                 getPokemonName();
                 launchTimer();
             }
         });
-        display.setOnClickListener(new View.OnClickListener(){
+        display.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){ displayColor(); }
+            public void onClick(View view) {
+                displayColor();
+            }
         });
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,11 +146,16 @@ public class GameActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Function used to block interaction with back button
+     */
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
     }
 
+    /**
+     * Function used to launch the timer for the actual question
+     */
     private void launchTimer() {
         int count = checkTimeLimitAvailable();
         actualTimer = new CountDownTimer(count, 1) {
@@ -141,32 +170,40 @@ public class GameActivity extends AppCompatActivity {
         }.start();
     }
 
+    /**
+     * Function used to calculate the time limit for the timer
+     * @return the time limit in millis
+     */
     private int checkTimeLimitAvailable() {
         int i = 21000;
-        if(actualScore.score >= 50){
+        if (actualScore.score >= 50) {
             i = 16000;
         }
-        if (actualScore.score >= 100){
+        if (actualScore.score >= 100) {
             i = 11000;
         }
-        if ( actualScore.score >= 200){
+        if (actualScore.score >= 200) {
             i = 6000;
         }
         musicM.playLevel(actualScore.score);
         return i;
     }
 
+    /**
+     * Function used to retrieve the pokemon name from the image picked
+     */
     private void getPokemonName() {
+        //Getting all names
         List<PokemonNames> names_to_get = new ArrayList<>(displayed_names);
         List<PokemonNames> names = new ArrayList<>();
         int rndInt;
         final Random rand = new Random();
+        //getting ressource name in order to get the good answer
         String resName = getResourceNameFromClassByID(R.drawable.class, (Integer) pokemon.getTag());
-        Log.e("name",resName);
-        resName = resName.replace("_","");
-        Log.e("name",resName);
+        resName = resName.replace("_", "");
         int num = Integer.parseInt(resName);
-        names.add(names_to_get.remove(num-1));
+        //Adding game responses with good answer and 3 random answers
+        names.add(names_to_get.remove(num - 1));
         actualPokemonName = names.get(0);
         rndInt = rand.nextInt(names_to_get.size());
         names.add(names_to_get.remove(rndInt));
@@ -174,24 +211,30 @@ public class GameActivity extends AppCompatActivity {
         names.add(names_to_get.remove(rndInt));
         rndInt = rand.nextInt(names_to_get.size());
         names.add(names_to_get.remove(rndInt));
-        for (PokemonNames str : names){
-            Log.i("list",str.toString());
-        }
         Collections.shuffle(names);
-        Log.e("name",String.valueOf(num));
+        Log.e("name", String.valueOf(num));
+
+        //Applying names to answer buttons
         btn1.setText(names.remove(0).toString());
         btn2.setText(names.remove(0).toString());
         btn3.setText(names.remove(0).toString());
         btn4.setText(names.remove(0).toString());
     }
 
+    /**
+     * Function used to retrieve the name of the ressource used in the imageView
+     * @param aClass
+     * @param resourceID
+     * @return
+     * @throws IllegalArgumentException
+     */
     public String getResourceNameFromClassByID(Class<?> aClass, int resourceID)
-            throws IllegalArgumentException{
+            throws IllegalArgumentException {
         /* Get all Fields from the class passed. */
         Field[] drawableFields = aClass.getFields();
 
         /* Loop through all Fields. */
-        for(Field f : drawableFields){
+        for (Field f : drawableFields) {
             try {
                 /* All fields within the subclasses of R
                  * are Integers, so we need no type-check here. */
@@ -207,24 +250,24 @@ public class GameActivity extends AppCompatActivity {
         throw new IllegalArgumentException();
     }
 
-    public void getRndImg(){
+    public void getRndImg() {
 
         final Random rand = new Random();
         final int rndInt = rand.nextInt(imgs_black.length());
         final int resID = imgs_black.getResourceId(rndInt, 0);
-        displaycolor=false;
+        displaycolor = false;
         int color = ContextCompat.getColor(this, R.color.black);
         pokemon.setColorFilter(color, PorterDuff.Mode.SRC_IN);
         pokemon.setImageResource(resID);
         pokemon.setTag(resID);
     }
 
-    public void displayColor(){
-        if(displaycolor){
-            displaycolor=false;
+    public void displayColor() {
+        if (displaycolor) {
+            displaycolor = false;
             int color = ContextCompat.getColor(this, R.color.black);
             pokemon.setColorFilter(color, PorterDuff.Mode.SRC_IN);
-        }else{
+        } else {
             displaycolor = true;
             pokemon.setColorFilter(null);
         }
@@ -236,7 +279,7 @@ public class GameActivity extends AppCompatActivity {
         btn2.setClickable(false);
         btn3.setClickable(false);
         btn4.setClickable(false);
-        if(actualPokemonName.toString() == btn.getText().toString()){
+        if (actualPokemonName.toString() == btn.getText().toString()) {
             /*Toast toast = Toast.makeText(this, "cévré", Toast.LENGTH_SHORT);
             toast.show();*/
 
@@ -258,7 +301,7 @@ public class GameActivity extends AppCompatActivity {
 
             public void onTick(long millisUntilFinished) {
                 displayProgress(millisUntilFinished);
-                if(millisUntilFinished==1500){
+                if (millisUntilFinished == 1500) {
                     musicM.playPokedexRoll();
                 }
             }
@@ -273,9 +316,10 @@ public class GameActivity extends AppCompatActivity {
             }
         }.start();
     }
+
     private void displayBadAnswer() {
         chrono.setTextColor(ContextCompat.getColor(this, R.color.red));
-        chrono.setText("Dommage, ce pokémon était "+actualPokemonName.toString().toUpperCase(Locale.ROOT));
+        chrono.setText("Dommage, ce pokémon était " + actualPokemonName.toString().toUpperCase(Locale.ROOT));
         displayColor();
         nbfaults++;
         changeImage();
@@ -283,20 +327,20 @@ public class GameActivity extends AppCompatActivity {
 
             public void onTick(long millisUntilFinished) {
                 displayProgress(millisUntilFinished);
-                if(millisUntilFinished==1500){
+                if (millisUntilFinished == 1500) {
                     musicM.playPokedexRoll();
                 }
             }
 
             public void onFinish() {
 
-                if(nbfaults>= MAXFAULTS){
+                if (nbfaults >= MAXFAULTS) {
                     actualTimer = null;
-                    Log.e("Hello","YOU LOSE");
+                    Log.e("Hello", "YOU LOSE");
                     Intent intent = new Intent(GameActivity.this, ScoresActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra("nouveauscore",true);
-                    intent.putExtra("score",actualScore);
+                    intent.putExtra("nouveauscore", true);
+                    intent.putExtra("score", actualScore);
                     getApplicationContext().startActivity(intent);
                 } else {
                     displayColor();
@@ -311,17 +355,17 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void changeImage() {
-        switch(nbfaults){
-            case 1 :
+        switch (nbfaults) {
+            case 1:
                 scoresView.setImageResource(R.drawable.pixel_balls_2);
                 break;
-            case 2 :
+            case 2:
                 scoresView.setImageResource(R.drawable.pixel_balls_1);
                 break;
             case 3:
                 scoresView.setImageResource(R.drawable.pixel_balls_0);
                 break;
-            default :
+            default:
                 scoresView.setImageResource(R.drawable.pixel_balls_3);
                 break;
         }
@@ -335,8 +379,8 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void displayProgress(long millisUntilFinished) {
-        int maxValue=answerBar.getMax();
-        long progress = ((3000-millisUntilFinished) * maxValue) / 3000; // (3000 * answerBar.getProgress())/100 = millisUntilFinished
+        int maxValue = answerBar.getMax();
+        long progress = ((3000 - millisUntilFinished) * maxValue) / 3000;
         Log.e("test", String.valueOf(progress));
         answerBar.setProgress((int) progress);
     }
@@ -346,6 +390,7 @@ public class GameActivity extends AppCompatActivity {
         super.onResume();
         musicM.start();
     }
+
     @Override
     protected void onPause() {
         super.onPause();

@@ -2,6 +2,9 @@ package com.example.PokemonQuizz;
 
 import java.util.stream.Stream;
 
+/**
+ * Enum used to store each pokemon name
+ */
 public enum PokemonNames {
 
 
