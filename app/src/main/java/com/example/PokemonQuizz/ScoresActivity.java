@@ -35,9 +35,15 @@ import java.util.Objects;
 
 import pl.droidsonroids.gif.GifImageView;
 
+/**
+ * Activity launched to display scores of the player
+ */
 public class ScoresActivity extends AppCompatActivity {
 
 
+    /**
+     * Attributes declaration
+     */
     public Score newScoreReceived;
     public ScoresList scoresSaved;
     public boolean newscoreget;
@@ -47,15 +53,22 @@ public class ScoresActivity extends AppCompatActivity {
     public MusicManager musicM;
     public GifImageView gifImage;
 
+    /**
+     * Default function used at creation of the Activity
+     *
+     * @param savedInstanceState bundle used for app
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
+        //Remove title bar && Remove notification bar
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         Objects.requireNonNull(getSupportActionBar()).hide();
         super.onCreate(savedInstanceState);
+        //if file doesn't exist, creation of a file
         if (createNewFile()) {
             scoresSaved = new ScoresList();
             saveFile();
-        } else {
+        } else { //else reading of file existing
             readAncientList();
         }
         setContentView(R.layout.activity_scores);
@@ -68,6 +81,7 @@ public class ScoresActivity extends AppCompatActivity {
         newScoreReceived = (Score) it.getSerializableExtra("score");
         gifImage = findViewById(R.id.gifImage);
         gifImage.setVisibility(View.GONE);
+        //if there is a score created from GameActivity, saving file with new score
         if (newscoreget) {
             scoresSaved.addScore(newScoreReceived);
             displayImage();
@@ -106,6 +120,9 @@ public class ScoresActivity extends AppCompatActivity {
         listView.setMenuCreator(creator);
     }
 
+    /**
+     * Function used to display an image depending on rank of the player
+     */
     private void displayImage() {
         int position = 4;
         for (Score sc : scoresSaved.scores) {
@@ -136,6 +153,9 @@ public class ScoresActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Function used to save all scores in the file
+     */
     private void saveFile() {
         try {
             Gson gson = new Gson();
@@ -148,6 +168,10 @@ public class ScoresActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Function used to create a new file
+     * @return if the file has been created or not
+     */
     private boolean createNewFile() {
         File file = new File(getApplicationContext().getCacheDir(), filename);
         if (!file.exists()) {
@@ -163,6 +187,9 @@ public class ScoresActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Function used to display Scores in a ListView
+     */
     private void adaptList() {
         ArrayAdapter<Score> arrayAdapter
                 = new ArrayAdapter<>(this, R.layout.list_black_text, R.id.list_content, scoresSaved.scores);
@@ -171,6 +198,9 @@ public class ScoresActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Function used to read the list and create a ScoresList Object
+     */
     private void readAncientList() {
         Gson gson = new Gson();
         try {
@@ -188,6 +218,11 @@ public class ScoresActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Function used to write the ScoresList into a json file
+     * @param json the json string to serialize
+     * @throws IOException
+     */
     private void write(String json) throws IOException {
         File file = new File(getApplicationContext().getCacheDir(), filename);
         FileWriter fw = new FileWriter(file.getAbsoluteFile());
@@ -196,35 +231,56 @@ public class ScoresActivity extends AppCompatActivity {
         bw.close();
     }
 
+    /**
+     * Function used on creating SwipingListView
+     * @param ctx the context of the current activity
+     * @param dp the width of the item to display
+     * @return the used size of displaying item
+     */
     public static int dp2px(Context ctx, float dp) {
         final float scale = ctx.getResources().getDisplayMetrics().density;
         return (int) (dp * scale + 0.5f);
     }
 
+    /**
+     * Function used to modify the onBackPressed usage
+     */
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(this, MenuActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * Function used to resume music on app resumed
+     */
     @Override
     protected void onResume() {
         super.onResume();
         musicM.start();
     }
 
+    /**
+     * Function used to pause music on app paused
+     */
     @Override
     protected void onPause() {
         super.onPause();
         musicM.pause();
     }
 
+    /**
+     * Function used to pause music on app stop
+     */
     @Override
     protected void onStop() {
         super.onStop();
         musicM.pause();
     }
 
+    /**
+     * Function used to pause music when app destroyed
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();

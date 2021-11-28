@@ -223,9 +223,9 @@ public class GameActivity extends AppCompatActivity {
 
     /**
      * Function used to retrieve the name of the ressource used in the imageView
-     * @param aClass
-     * @param resourceID
-     * @return
+     * @param aClass the imageView
+     * @param resourceID the id of the ressource in drawable folder
+     * @return the name of the ressource
      * @throws IllegalArgumentException
      */
     public String getResourceNameFromClassByID(Class<?> aClass, int resourceID)
@@ -250,35 +250,48 @@ public class GameActivity extends AppCompatActivity {
         throw new IllegalArgumentException();
     }
 
+    /**
+     * Function used to get an Image from the list of drawables
+     */
     public void getRndImg() {
 
         final Random rand = new Random();
         final int rndInt = rand.nextInt(imgs_black.length());
         final int resID = imgs_black.getResourceId(rndInt, 0);
         displaycolor = false;
+        //setting color filter to make image black and white
         int color = ContextCompat.getColor(this, R.color.black);
         pokemon.setColorFilter(color, PorterDuff.Mode.SRC_IN);
         pokemon.setImageResource(resID);
         pokemon.setTag(resID);
     }
 
+    /**
+     * Function used to display the color image and to hide it
+     */
     public void displayColor() {
+        //if color is displayed, go to black and white
         if (displaycolor) {
             displaycolor = false;
             int color = ContextCompat.getColor(this, R.color.black);
             pokemon.setColorFilter(color, PorterDuff.Mode.SRC_IN);
-        } else {
+        } else {        //else display the true color of the image
             displaycolor = true;
             pokemon.setColorFilter(null);
         }
     }
 
+    /**
+     * Function used to check if the answer is correct or not
+     * @param btn the button clicked
+     */
     private void checkResult(Button btn) {
         actualTimer.cancel();
         btn1.setClickable(false);
         btn2.setClickable(false);
         btn3.setClickable(false);
         btn4.setClickable(false);
+        //if the name equals the button text
         if (actualPokemonName.toString() == btn.getText().toString()) {
             /*Toast toast = Toast.makeText(this, "cévré", Toast.LENGTH_SHORT);
             toast.show();*/
@@ -291,12 +304,17 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     *  Function used to display the good answer animation
+     */
     private void displayGoodAnswer() {
+        //set good answer text
         chrono.setTextColor(ContextCompat.getColor(this, R.color.deep_green));
         chrono.setText("Bien joué ! Nos équipes préparent le prochain !");
         displayColor();
         actualScore.addPoint();
         scoresText.setText(String.valueOf(actualScore.score));
+
         new CountDownTimer(3000, 1) {
 
             public void onTick(long millisUntilFinished) {
@@ -317,6 +335,9 @@ public class GameActivity extends AppCompatActivity {
         }.start();
     }
 
+    /**
+     * Function used to display bad answer animation
+     */
     private void displayBadAnswer() {
         chrono.setTextColor(ContextCompat.getColor(this, R.color.red));
         chrono.setText("Dommage, ce pokémon était " + actualPokemonName.toString().toUpperCase(Locale.ROOT));
@@ -354,6 +375,9 @@ public class GameActivity extends AppCompatActivity {
         }.start();
     }
 
+    /**
+     * Function used to change the life counter of the player
+     */
     private void changeImage() {
         switch (nbfaults) {
             case 1:
@@ -371,6 +395,9 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Function used to active buttons
+     */
     private void reactiveButtons() {
         btn1.setClickable(true);
         btn2.setClickable(true);
@@ -378,6 +405,10 @@ public class GameActivity extends AppCompatActivity {
         btn4.setClickable(true);
     }
 
+    /**
+     * Function used to display progress of waiting process
+     * @param millisUntilFinished millis until end of timer
+     */
     private void displayProgress(long millisUntilFinished) {
         int maxValue = answerBar.getMax();
         long progress = ((3000 - millisUntilFinished) * maxValue) / 3000;
@@ -385,24 +416,36 @@ public class GameActivity extends AppCompatActivity {
         answerBar.setProgress((int) progress);
     }
 
+    /**
+     *  Function used to resume music on app resumed
+     */
     @Override
     protected void onResume() {
         super.onResume();
         musicM.start();
     }
 
+    /**
+     * Function used to pause music on app paused
+     */
     @Override
     protected void onPause() {
         super.onPause();
         musicM.pause();
     }
 
+    /**
+     * Function used to pause music on app stop
+     */
     @Override
     protected void onStop() {
         super.onStop();
         musicM.pause();
     }
 
+    /**
+     * Function used to pause music when app destroyed
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
