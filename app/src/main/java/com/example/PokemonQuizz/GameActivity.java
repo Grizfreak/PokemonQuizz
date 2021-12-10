@@ -3,12 +3,12 @@ package com.example.PokemonQuizz;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -85,10 +85,10 @@ public class GameActivity extends AppCompatActivity {
         scoresText = findViewById(R.id.scoresText);
         scoresText.setText(String.valueOf(actualScore.score));
         musicM = new MusicManager(this);
-        btn1.setBackgroundColor(getResources().getColor(R.color.red));
-        btn2.setBackgroundColor(getResources().getColor(R.color.blue));
-        btn3.setBackgroundColor(getResources().getColor(R.color.yellow));
-        btn4.setBackgroundColor(getResources().getColor(R.color.green));
+        btn1.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.red));
+        btn2.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.blue));
+        btn3.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.yellow));
+        btn4.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.green));
         changeImage();
         imgs_black = getResources().obtainTypedArray(R.array.pokemon_black_images_array);
 
@@ -101,48 +101,28 @@ public class GameActivity extends AppCompatActivity {
         launchTimer();
 
         //Setting up buttons
-        reload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Generating
-                getRndImg();
-                getPokemonName();
-                launchTimer();
-            }
+        reload.setOnClickListener(view -> {
+            //Generating
+            getRndImg();
+            getPokemonName();
+            launchTimer();
         });
-        display.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                displayColor();
-            }
+        display.setOnClickListener(view -> displayColor());
+        btn1.setOnClickListener(view -> {
+            musicM.playButtonSound();
+            checkResult(btn1);
         });
-        btn1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                musicM.playButtonSound();
-                checkResult(btn1);
-            }
+        btn2.setOnClickListener(view -> {
+            musicM.playButtonSound();
+            checkResult(btn2);
         });
-        btn2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                musicM.playButtonSound();
-                checkResult(btn2);
-            }
+        btn3.setOnClickListener(view -> {
+            musicM.playButtonSound();
+            checkResult(btn3);
         });
-        btn3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                musicM.playButtonSound();
-                checkResult(btn3);
-            }
-        });
-        btn4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                musicM.playButtonSound();
-                checkResult(btn4);
-            }
+        btn4.setOnClickListener(view -> {
+            musicM.playButtonSound();
+            checkResult(btn4);
         });
     }
 
@@ -160,6 +140,7 @@ public class GameActivity extends AppCompatActivity {
         int count = checkTimeLimitAvailable();
         actualTimer = new CountDownTimer(count, 1) {
 
+            @SuppressLint("SetTextI18n")
             public void onTick(long millisUntilFinished) {
                 timelimit.setText("Il vous reste : " + millisUntilFinished / 1000 + " s");
             }
@@ -212,7 +193,6 @@ public class GameActivity extends AppCompatActivity {
         rndInt = rand.nextInt(names_to_get.size());
         names.add(names_to_get.remove(rndInt));
         Collections.shuffle(names);
-        Log.e("name", String.valueOf(num));
 
         //Applying names to answer buttons
         btn1.setText(names.remove(0).toString());
@@ -226,7 +206,7 @@ public class GameActivity extends AppCompatActivity {
      * @param aClass the imageView
      * @param resourceID the id of the ressource in drawable folder
      * @return the name of the ressource
-     * @throws IllegalArgumentException
+     * @throws IllegalArgumentException if argument passed isn't usable
      */
     public String getResourceNameFromClassByID(Class<?> aClass, int resourceID)
             throws IllegalArgumentException {
@@ -292,14 +272,9 @@ public class GameActivity extends AppCompatActivity {
         btn3.setClickable(false);
         btn4.setClickable(false);
         //if the name equals the button text
-        if (actualPokemonName.toString() == btn.getText().toString()) {
-            /*Toast toast = Toast.makeText(this, "cévré", Toast.LENGTH_SHORT);
-            toast.show();*/
-
+        if (actualPokemonName.toString().equals(btn.getText().toString())) {
             displayGoodAnswer();
         } else {
-            /*Toast toast = Toast.makeText(this, "céfo", Toast.LENGTH_SHORT);
-            toast.show();*/
             displayBadAnswer();
         }
     }
@@ -307,6 +282,7 @@ public class GameActivity extends AppCompatActivity {
     /**
      *  Function used to display the good answer animation
      */
+    @SuppressLint("SetTextI18n")
     private void displayGoodAnswer() {
         //set good answer text
         chrono.setTextColor(ContextCompat.getColor(this, R.color.deep_green));
@@ -338,6 +314,7 @@ public class GameActivity extends AppCompatActivity {
     /**
      * Function used to display bad answer animation
      */
+    @SuppressLint("SetTextI18n")
     private void displayBadAnswer() {
         chrono.setTextColor(ContextCompat.getColor(this, R.color.red));
         chrono.setText("Dommage, ce pokémon était " + actualPokemonName.toString().toUpperCase(Locale.ROOT));
@@ -357,7 +334,6 @@ public class GameActivity extends AppCompatActivity {
 
                 if (nbfaults >= MAXFAULTS) {
                     actualTimer = null;
-                    Log.e("Hello", "YOU LOSE");
                     Intent intent = new Intent(GameActivity.this, ScoresActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra("nouveauscore", true);
@@ -412,7 +388,6 @@ public class GameActivity extends AppCompatActivity {
     private void displayProgress(long millisUntilFinished) {
         int maxValue = answerBar.getMax();
         long progress = ((3000 - millisUntilFinished) * maxValue) / 3000;
-        Log.e("test", String.valueOf(progress));
         answerBar.setProgress((int) progress);
     }
 

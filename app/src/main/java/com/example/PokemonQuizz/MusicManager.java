@@ -52,7 +52,6 @@ public class MusicManager {
 
         // Load sound file (gun.wav) into SoundPool.
         this.IDrandomize_sound = this.soundPool.load(context, R.raw.randomize_sound,1);
-
     }
 
     /**

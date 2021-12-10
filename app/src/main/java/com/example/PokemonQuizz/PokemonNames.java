@@ -909,7 +909,7 @@ public enum PokemonNames {
 
     private final String label;
 
-    private PokemonNames(String label) {
+    PokemonNames(String label) {
         this.label = label;
     }
 

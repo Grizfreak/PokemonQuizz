@@ -1,29 +1,22 @@
 package com.example.PokemonQuizz;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.opengl.Visibility;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.BounceInterpolator;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.google.gson.Gson;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -160,7 +153,6 @@ public class ScoresActivity extends AppCompatActivity {
         try {
             Gson gson = new Gson();
             String json = gson.toJson(scoresSaved);
-            Log.e("json", json);
             write(json);
         } catch (IOException e) {
             e.printStackTrace();
@@ -177,7 +169,6 @@ public class ScoresActivity extends AppCompatActivity {
         if (!file.exists()) {
             try {
                 file.createNewFile();
-                Log.e("test", "File didn't exist, so I created it !");
                 return true;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -206,12 +197,6 @@ public class ScoresActivity extends AppCompatActivity {
         try {
             Reader reader = new FileReader(getApplicationContext().getCacheDir() + "/" + filename);
             scoresSaved = gson.fromJson(reader, ScoresList.class);
-        /*if (gson.fromJson(reader,ScoresList.class) != null){
-            scoresSaved = gson.fromJson(reader,ScoresList.class);
-        }
-        if (scoresSaved == null){
-            scoresSaved = new ScoresList();
-        }*/
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -221,7 +206,7 @@ public class ScoresActivity extends AppCompatActivity {
     /**
      * Function used to write the ScoresList into a json file
      * @param json the json string to serialize
-     * @throws IOException
+     * @throws IOException thrown if there is no file
      */
     private void write(String json) throws IOException {
         File file = new File(getApplicationContext().getCacheDir(), filename);

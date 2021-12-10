@@ -1,14 +1,9 @@
 package com.example.PokemonQuizz;
 
-import static java.lang.Thread.sleep;
-
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ActionBar;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -125,19 +120,17 @@ public class MenuActivity extends AppCompatActivity {
                     .show();
         });
 
-        creditsButton.setOnClickListener(view -> {
-            new AlertDialog.Builder(view.getContext())
-                    .setTitle("Crédits et mentions")
-                    .setMessage("Cette appplication a été réalisée par Antonin AUBERT (moi), Etudiant en 2ème année de DUT Informatique à l'IUT de Laval ! " +
-                            "Cette oeuvre est la propriété de Le Mans Université et relève de la législation française et internationale sur le droit d’auteur et la propriété intellectuelle. " +
-                            "Amusez-vous bien !")
+        creditsButton.setOnClickListener(view -> new AlertDialog.Builder(view.getContext())
+                .setTitle("Crédits et mentions")
+                .setMessage("Cette appplication a été réalisée par Antonin AUBERT (moi), Etudiant en 2ème année de DUT Informatique à l'IUT de Laval ! " +
+                        "Cette oeuvre est la propriété de Le Mans Université et relève de la législation française et internationale sur le droit d’auteur et la propriété intellectuelle. " +
+                        "Amusez-vous bien !")
 
-                    .setIcon(R.drawable.logo_iut)
-                    .setPositiveButton(R.string.ok, (dialog, which) -> {
+                .setIcon(R.drawable.logo_iut)
+                .setPositiveButton(R.string.ok, (dialog, which) -> {
 
-                    })
-                    .show();
-        });
+                })
+                .show());
 
         changeScene.setOnClickListener(view -> {
             musicM.playButtonSound();
